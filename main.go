@@ -63,7 +63,7 @@ func debugHandler(w http.ResponseWriter, r *http.Request) {
 			OS:           runtime.GOOS,
 			Architecture: runtime.GOARCH,
 		},
-		Version: "v2",
+		Version: "v3",
 	}
 
 	w.Header().Set("Content-Type", "application/json")
