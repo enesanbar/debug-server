@@ -10,6 +10,7 @@ A simple Go webserver that responds with helpful debug information in JSON forma
   - HTTP method and path
   - Client remote address
   - Request headers and query parameters
+  - All server environment variables
   - Server information (hostname, Go version, CPU count, OS, architecture)
 
 ## Running Locally
@@ -51,6 +52,10 @@ docker run -p 8080:8080 debug-server
     "Accept": "*/*"
   },
   "query_params": {},
+  "env_vars": {
+    "HOSTNAME": "abc123def456",
+    "PATH": "/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
+  },
   "host": "localhost:8080",
   "server_info": {
     "hostname": "abc123def456",

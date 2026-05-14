@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -16,6 +17,7 @@ type DebugInfo struct {
 	RemoteAddr  string            `json:"remote_addr"`
 	Headers     map[string]string `json:"headers"`
 	QueryParams map[string]string `json:"query_params"`
+	EnvVars     map[string]string `json:"env_vars"`
 	Host        string            `json:"host"`
 	ServerInfo  ServerInfo        `json:"server_info"`
 	Version     string            `json:"version"`
@@ -47,6 +49,14 @@ func debugHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	envVars := make(map[string]string)
+	for _, envVar := range os.Environ() {
+		parts := strings.SplitN(envVar, "=", 2)
+		if len(parts) == 2 {
+			envVars[parts[0]] = parts[1]
+		}
+	}
+
 	debugInfo := DebugInfo{
 		Timestamp:   time.Now().UTC().Format(time.RFC3339),
 		Method:      r.Method,
@@ -54,6 +64,7 @@ func debugHandler(w http.ResponseWriter, r *http.Request) {
 		RemoteAddr:  r.RemoteAddr,
 		Headers:     headers,
 		QueryParams: queryParams,
+		EnvVars:     envVars,
 		Host:        r.Host,
 		ServerInfo: ServerInfo{
 			Hostname:     hostname,
